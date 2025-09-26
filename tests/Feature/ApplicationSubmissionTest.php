@@ -85,14 +85,12 @@ it('can submit a valid application with two committees', function () {
             'committee_choices' => json_encode(['Human resources Management (HRM)', 'Social Media']),
             'status' => 'pending',
         ]);
-    }
+    });
 
-    /** @test */
-    public function it_requires_all_mandatory_fields()
-    {
-        $response = $this->post('/apply', []);
+test('it requires all mandatory fields', function () {
+    $response = $this->post('/apply', []);
 
-        $response->assertSessionHasErrors([
+    $response->assertSessionHasErrors([
             'full_name',
             'email',
             'mobile',
@@ -108,18 +106,16 @@ it('can submit a valid application with two committees', function () {
             'why_committee',
             'committee_responsibilities',
         ]);
-    }
+    });
 
-    /** @test */
-    public function it_validates_committee_choices_minimum()
-    {
-        $applicationData = [
-            'full_name' => 'Test User',
-            'email' => 'test@example.com',
-            'mobile' => '+20 123 456 7890',
-            'facebook_link' => 'https://facebook.com/test',
-            'university' => 'Suez University',
-            'faculty' => 'Faculty of Engineering',
+test('it validates committee choices minimum', function () {
+    $applicationData = [
+        'full_name' => 'Test User',
+        'email' => 'test@example.com',
+        'mobile' => '+20 123 456 7890',
+        'facebook_link' => 'https://facebook.com/test',
+        'university' => 'Suez University',
+        'faculty' => 'Faculty of Engineering',
             'department' => 'Petroleum Engineering',
             'academic_year' => 'first',
             'previous_experience' => 'Some experience here',
@@ -132,16 +128,14 @@ it('can submit a valid application with two committees', function () {
 
         $response = $this->post('/apply', $applicationData);
 
-        $response->assertSessionHasErrors('committee_choices');
-    }
+    $response->assertSessionHasErrors('committee_choices');
+});
 
-    /** @test */
-    public function it_validates_committee_choices_maximum()
-    {
-        $applicationData = [
-            'full_name' => 'Test User',
-            'email' => 'test@example.com',
-            'mobile' => '+20 123 456 7890',
+test('it validates committee choices maximum', function () {
+    $applicationData = [
+        'full_name' => 'Test User',
+        'email' => 'test@example.com',
+        'mobile' => '+20 123 456 7890',
             'facebook_link' => 'https://facebook.com/test',
             'university' => 'Suez University',
             'faculty' => 'Faculty of Engineering',
@@ -157,15 +151,13 @@ it('can submit a valid application with two committees', function () {
 
         $response = $this->post('/apply', $applicationData);
 
-        $response->assertSessionHasErrors('committee_choices');
-    }
+    $response->assertSessionHasErrors('committee_choices');
+});
 
-    /** @test */
-    public function it_validates_email_uniqueness()
-    {
-        // Create an existing application
-        $existingData = [
-            'full_name' => 'Existing User',
+test('it validates email uniqueness', function () {
+    // Create an existing application
+    $existingData = [
+        'full_name' => 'Existing User',
             'email' => 'existing@example.com',
             'mobile' => '+20 111 111 1111',
             'facebook_link' => 'https://facebook.com/existing',
@@ -190,17 +182,15 @@ it('can submit a valid application with two committees', function () {
 
         $response = $this->post('/apply', $duplicateData);
 
-        $response->assertSessionHasErrors('email');
-    }
+    $response->assertSessionHasErrors('email');
+});
 
-    /** @test */
-    public function it_validates_text_field_minimum_length()
-    {
-        $applicationData = [
-            'full_name' => 'Test User',
-            'email' => 'test@example.com',
-            'mobile' => '+20 123 456 7890',
-            'facebook_link' => 'https://facebook.com/test',
+test('it validates text field minimum length', function () {
+    $applicationData = [
+        'full_name' => 'Test User',
+        'email' => 'test@example.com',
+        'mobile' => '+20 123 456 7890',
+        'facebook_link' => 'https://facebook.com/test',
             'university' => 'Suez University',
             'faculty' => 'Faculty of Engineering',
             'department' => 'Petroleum Engineering',
@@ -222,17 +212,15 @@ it('can submit a valid application with two committees', function () {
             'why_committee',
             'committee_responsibilities',
         ]);
-    }
+});
 
-    /** @test */
-    public function it_validates_academic_year_values()
-    {
-        $applicationData = [
-            'full_name' => 'Test User',
-            'email' => 'test@example.com',
-            'mobile' => '+20 123 456 7890',
-            'facebook_link' => 'https://facebook.com/test',
-            'university' => 'Suez University',
+test('it validates academic year values', function () {
+    $applicationData = [
+        'full_name' => 'Test User',
+        'email' => 'test@example.com',
+        'mobile' => '+20 123 456 7890',
+        'facebook_link' => 'https://facebook.com/test',
+        'university' => 'Suez University',
             'faculty' => 'Faculty of Engineering',
             'department' => 'Petroleum Engineering',
             'academic_year' => 'invalid_year',
@@ -244,22 +232,20 @@ it('can submit a valid application with two committees', function () {
             'committee_responsibilities' => 'Some knowledge',
         ];
 
-        $response = $this->post('/apply', $applicationData);
+    $response = $this->post('/apply', $applicationData);
 
-        $response->assertSessionHasErrors('academic_year');
-    }
+    $response->assertSessionHasErrors('academic_year');
+});
 
-    /** @test */
-    public function it_accepts_valid_academic_year_values()
-    {
-        $validYears = ['preparatory', 'first', 'second', 'third', 'fourth', 'fifth'];
+test('it accepts valid academic year values', function () {
+    $validYears = ['preparatory', 'first', 'second', 'third', 'fourth', 'fifth'];
 
-        foreach ($validYears as $year) {
-            $applicationData = [
-                'full_name' => 'Test User ' . $year,
-                'email' => 'test.' . $year . '@example.com',
-                'mobile' => '+20 123 456 7890',
-                'facebook_link' => 'https://facebook.com/test',
+    foreach ($validYears as $year) {
+        $applicationData = [
+            'full_name' => 'Test User ' . $year,
+            'email' => 'test.' . $year . '@example.com',
+            'mobile' => '+20 123 456 7890',
+            'facebook_link' => 'https://facebook.com/test',
                 'university' => 'Suez University',
                 'faculty' => 'Faculty of Engineering',
                 'department' => 'Petroleum Engineering',
@@ -276,9 +262,8 @@ it('can submit a valid application with two committees', function () {
 
             $response->assertRedirect('/application/success');
             $this->assertDatabaseHas('applications', [
-                'email' => 'test.' . $year . '@example.com',
-                'academic_year' => $year,
-            ]);
-        }
+            'email' => 'test.' . $year . '@example.com',
+            'academic_year' => $year,
+        ]);
     }
-}
+});
