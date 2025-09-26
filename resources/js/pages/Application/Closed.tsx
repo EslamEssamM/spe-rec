@@ -9,7 +9,7 @@ export default function Closed({ message, contactEmail }: ApplicationClosedProps
   return (
     <>
       <Head title="Applications Closed" />
-      
+
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4">
         <div className="max-w-2xl mx-auto text-center">
           {/* Icon */}
@@ -37,7 +37,7 @@ export default function Closed({ message, contactEmail }: ApplicationClosedProps
             <p className="text-gray-600 mb-4">
               For any questions or inquiries, please contact us:
             </p>
-            <a 
+            <a
               href={`mailto:${contactEmail}`}
               className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105"
             >

@@ -3,6 +3,28 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="SPE Suez - Society of Petroleum Engineers Suez Chapter. Join our student community and explore opportunities in the petroleum engineering field.">
+        <meta name="keywords" content="SPE, Society of Petroleum Engineers, Suez, petroleum engineering, student chapter, engineering, oil, gas">
+        <meta name="author" content="SPE Suez">
+        <meta name="robots" content="index, follow">
+
+        {{-- Open Graph / Facebook --}}
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="{{ config('app.name', 'SPE Suez') }}">
+        <meta property="og:description" content="SPE Suez - Society of Petroleum Engineers Suez Chapter. Join our student community and explore opportunities in the petroleum engineering field.">
+        <meta property="og:image" content="{{ asset('spe-logo-light.png') }}">
+
+        {{-- Twitter --}}
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{{ url()->current() }}">
+        <meta property="twitter:title" content="{{ config('app.name', 'SPE Suez') }}">
+        <meta property="twitter:description" content="SPE Suez - Society of Petroleum Engineers Suez Chapter. Join our student community and explore opportunities in the petroleum engineering field.">
+        <meta property="twitter:image" content="{{ asset('spe-logo-light.png') }}">
+
+        {{-- Theme Color --}}
+        <meta name="theme-color" content="#1f2937">
+        <meta name="msapplication-TileColor" content="#1f2937">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>

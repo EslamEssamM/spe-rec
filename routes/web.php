@@ -22,9 +22,7 @@ Route::get('/application/success', [ApplicationController::class, 'success'])->n
 
 // Authenticated user routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });
 
 // Admin routes (Phase 5)

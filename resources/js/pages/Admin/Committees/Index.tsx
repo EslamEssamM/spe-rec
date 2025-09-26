@@ -54,14 +54,14 @@ export default function Index({ committees }: Props) {
               Manage committees and their status ({committees.length} total)
             </p>
           </div>
-          <Button asChild>
+          {/* <Button asChild>
             <Link href="/admin/committees/create">
               <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Add Committee
             </Link>
-          </Button>
+          </Button> */}
         </div>
 
         {/* Statistics Cards */}
@@ -185,16 +185,16 @@ export default function Index({ committees }: Props) {
               {/* Actions */}
               <div className="mt-4 flex items-center justify-between gap-2">
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" asChild>
+                  {/* <Button variant="outline" size="sm" asChild>
                     <Link href={`/admin/committees/${committee.id}`}>
                       View
                     </Link>
-                  </Button>
-                  <Button variant="outline" size="sm" asChild>
+                  </Button> */}
+                  {/* <Button variant="outline" size="sm" asChild>
                     <Link href={`/admin/committees/${committee.id}/edit`}>
                       Edit
                     </Link>
-                  </Button>
+                  </Button> */}
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -204,15 +204,7 @@ export default function Index({ committees }: Props) {
                   >
                     {committee.is_open ? 'Close' : 'Open'}
                   </Button>
-                  {committee.applications_count === 0 && (
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(committee.id, committee.name)}
-                    >
-                      Delete
-                    </Button>
-                  )}
+
                 </div>
               </div>
             </div>

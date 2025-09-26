@@ -212,8 +212,10 @@ export default function Index({
                               className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                               value={`${filters.sort_by}_${filters.sort_order}`}
                               onChange={(e) => {
-                                  const [sortBy, sortOrder] =
-                                      e.target.value.split('_');
+                                  const value = e.target.value;
+                                  const lastUnderscoreIndex = value.lastIndexOf('_');
+                                  const sortBy = value.substring(0, lastUnderscoreIndex);
+                                  const sortOrder = value.substring(lastUnderscoreIndex + 1);
                                   const params = new URLSearchParams(
                                       window.location.search,
                                   );

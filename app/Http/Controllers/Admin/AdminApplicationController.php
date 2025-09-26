@@ -49,6 +49,19 @@ class AdminApplicationController extends Controller
         // Sort by submitted date (newest first by default)
         $sortBy = $request->get('sort_by', 'submitted_at');
         $sortOrder = $request->get('sort_order', 'desc');
+
+        // Validate sort parameters
+        $allowedSortBy = ['submitted_at', 'full_name', 'status', 'created_at', 'updated_at'];
+        $allowedSortOrder = ['asc', 'desc'];
+
+        if (!in_array($sortBy, $allowedSortBy)) {
+            $sortBy = 'submitted_at';
+        }
+
+        if (!in_array($sortOrder, $allowedSortOrder)) {
+            $sortOrder = 'desc';
+        }
+
         $query->orderBy($sortBy, $sortOrder);
 
         $applications = $query->paginate(1000)->withQueryString();
