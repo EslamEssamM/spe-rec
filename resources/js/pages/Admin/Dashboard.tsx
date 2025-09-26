@@ -232,15 +232,20 @@ export default function Dashboard({
             Review Pending Applications
           </Link>
 
-          <Link
-            href="/admin/applications/export"
+                  {/* force a new tab */}
+                  <a
+                      type='button'
+                      role='link'
+                      aria-label='Export Applications'
+                      target='_blank'
+                      href="/admin/applications/export"
             className="flex items-center rounded-lg bg-blue-50 p-4 text-blue-800 transition hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/75"
           >
             <svg className="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             Export Applications
-          </Link>
+          </a>
 
           <Link
             href="/admin/committees"

@@ -43,5 +43,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/committees/{committee}/toggle', [AdminCommitteeController::class, 'toggleStatus'])->name('committees.toggle');
 });
 
-require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';

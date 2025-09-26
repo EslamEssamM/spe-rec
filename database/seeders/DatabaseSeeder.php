@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CommitteeSeeder::class,
             AdminUserSeeder::class,
+            ApplicationSeeder::class,
         ]);
 
         // Keep existing test user for development
