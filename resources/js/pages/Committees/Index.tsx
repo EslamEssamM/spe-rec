@@ -38,9 +38,9 @@ export default function Index({ committees, pageTitle, description }: Committees
                   <Link href="/" className="text-gray-600 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium">
                     Home
                   </Link>
-                  <Link href="/about" className="text-gray-600 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                  {/* <Link href="/about" className="text-gray-600 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium">
                     About
-                  </Link>
+                  </Link> */}
                   <Link href="/committees" className="text-blue-900 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium">
                     Committees
                   </Link>
