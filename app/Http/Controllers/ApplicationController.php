@@ -18,10 +18,10 @@ class ApplicationController extends Controller
 {
     public function create(): Response
     {
-        $committees = Committee::open()->orderBy('name')->get();
+        $committees = Committee::orderBy('name')->get();
 
         // Check if any committees are available
-        if ($committees->isEmpty()) {
+        if ($committees->where('is_open', true)->isEmpty()) {
             return Inertia::render('Application/Closed', [
                 'message' => 'Applications are currently closed. All committees have reached their capacity.',
                 'contactEmail' => 'spesusc.hrm2026@gmail.com',

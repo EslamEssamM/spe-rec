@@ -102,6 +102,7 @@ type FormSectionProps = {
   formData: FormData;
   setFormData: Dispatch<SetStateAction<FormData>>;
   errors: Record<string, string>;
+  committees?: Committee[];
 };
 
 const fieldLabels: Record<keyof FormData, string> = {
@@ -304,179 +305,146 @@ const ExperienceInfo = ({ formData, setFormData, errors }: FormSectionProps) => 
   </div>
 );
 
-const SkillsInfo = ({ formData, setFormData, errors }: FormSectionProps) => {
-  const committees = [
-    {
-      name: "Human resources Management (HRM)",
+const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSectionProps) => {
+  // Static committee styling configuration
+  const committeeStyles = {
+    "Human resources Management (HRM)": {
       icon: UserCheck,
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50",
       borderColor: "border-blue-200",
       selectedBorder: "border-blue-500",
       selectedBg: "bg-blue-100",
-      description: "Manage team recruitment and development"
     },
-    {
-      name: "Human resources Development (HRD)",
+    "Human resources Development (HRD)": {
       icon: TrendingUp,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50",
       borderColor: "border-green-200",
       selectedBorder: "border-green-500",
       selectedBg: "bg-green-100",
-      description: "Focus on skill development and growth"
     },
-    {
-      name: "Social Media",
+    "Social Media": {
       icon: Share2,
       color: "from-pink-500 to-pink-600",
       bgColor: "bg-pink-50",
       borderColor: "border-pink-200",
       selectedBorder: "border-pink-500",
       selectedBg: "bg-pink-100",
-      description: "Manage online presence and engagement"
     },
-    {
-      name: "Multimedia",
+    "Multimedia": {
       icon: Camera,
       color: "from-purple-500 to-purple-600",
       bgColor: "bg-purple-50",
       borderColor: "border-purple-200",
       selectedBorder: "border-purple-500",
       selectedBg: "bg-purple-100",
-      description: "Create visual content and productions"
     },
-    {
-      name: "Direct Marketing",
+    "Direct Marketing": {
       icon: Target,
       color: "from-red-500 to-red-600",
       bgColor: "bg-red-50",
       borderColor: "border-red-200",
       selectedBorder: "border-red-500",
       selectedBg: "bg-red-100",
-      description: "Handle marketing campaigns"
     },
-    {
-      name: "Magazine Editing",
+    "Magazine Editing": {
       icon: Edit3,
       color: "from-indigo-500 to-indigo-600",
       bgColor: "bg-indigo-50",
       borderColor: "border-indigo-200",
       selectedBorder: "border-indigo-500",
       selectedBg: "bg-indigo-100",
-      description: "Edit and curate content"
     },
-    {
-      name: "Magazine Design",
+    "Magazine Design": {
       icon: Palette,
       color: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50",
       borderColor: "border-orange-200",
       selectedBorder: "border-orange-500",
       selectedBg: "bg-orange-100",
-      description: "Design layouts and visuals"
     },
-    {
-      name: "International Relations (IR)",
+    "International Relations (IR)": {
       icon: Globe,
       color: "from-teal-500 to-teal-600",
       bgColor: "bg-teal-50",
       borderColor: "border-teal-200",
       selectedBorder: "border-teal-500",
       selectedBg: "bg-teal-100",
-      description: "Manage global partnerships"
     },
-    {
-      name: "Organizing Committee (OC)",
+    "Organizing Committee (OC)": {
       icon: Calendar,
       color: "from-violet-500 to-violet-600",
       bgColor: "bg-violet-50",
       borderColor: "border-violet-200",
       selectedBorder: "border-violet-500",
       selectedBg: "bg-violet-100",
-      description: "Plan and execute events"
     },
-    {
-      name: "Extracurricular Committee (EC)",
+    "Extracurricular Committee (EC)": {
       icon: Gamepad2,
       color: "from-cyan-500 to-cyan-600",
       bgColor: "bg-cyan-50",
       borderColor: "border-cyan-200",
       selectedBorder: "border-cyan-500",
       selectedBg: "bg-cyan-100",
-      description: "Organize student activities"
     },
-    {
-      name: "Logistics",
+    "Logistics": {
       icon: Truck,
       color: "from-amber-500 to-amber-600",
       bgColor: "bg-amber-50",
       borderColor: "border-amber-200",
       selectedBorder: "border-amber-500",
       selectedBg: "bg-amber-100",
-      description: "Handle resource management"
     },
-    {
-      name: "Energy4me",
+    "Energy4me": {
       icon: Zap,
       color: "from-yellow-500 to-yellow-600",
       bgColor: "bg-yellow-50",
       borderColor: "border-yellow-200",
       selectedBorder: "border-yellow-500",
       selectedBg: "bg-yellow-100",
-      description: "Energy awareness programs"
     },
-    {
-      name: "Academy",
+    "Academy": {
       icon: GraduationCap,
       color: "from-emerald-500 to-emerald-600",
       bgColor: "bg-emerald-50",
       borderColor: "border-emerald-200",
       selectedBorder: "border-emerald-500",
       selectedBg: "bg-emerald-100",
-      description: "Training and education programs"
     },
-    {
-      name: "Data Analysis",
+    "Data Analysis": {
       icon: BarChart3,
       color: "from-slate-500 to-slate-600",
       bgColor: "bg-slate-50",
       borderColor: "border-slate-200",
       selectedBorder: "border-slate-500",
       selectedBg: "bg-slate-100",
-      description: "Analyze data and create insights"
     },
-    {
-      name: "Business Development (BD)",
+    "Business Development (BD)": {
       icon: Building2,
       color: "from-stone-500 to-stone-600",
       bgColor: "bg-stone-50",
       borderColor: "border-stone-200",
       selectedBorder: "border-stone-500",
       selectedBg: "bg-stone-100",
-      description: "Develop business strategies"
     },
-    {
-      name: "Android",
+    "Android": {
       icon: Smartphone,
       color: "from-lime-500 to-lime-600",
       bgColor: "bg-lime-50",
       borderColor: "border-lime-200",
       selectedBorder: "border-lime-500",
       selectedBg: "bg-lime-100",
-      description: "Develop mobile applications"
     },
-    {
-      name: "Web Development",
+    "Web Development": {
       icon: Code,
       color: "from-sky-500 to-sky-600",
       bgColor: "bg-sky-50",
       borderColor: "border-sky-200",
       selectedBorder: "border-sky-500",
       selectedBg: "bg-sky-100",
-      description: "Create web applications"
     }
-  ];
+  };
 
   const handleCommitteeChange = (committee: string) => {
     const currentChoices = formData.committee_choices || [];
@@ -528,12 +496,20 @@ const SkillsInfo = ({ formData, setFormData, errors }: FormSectionProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {committees.map((committee) => {
             const isSelected = formData.committee_choices?.includes(committee.name) || false;
-            const isDisabled = !isSelected && selectedCount >= 2;
-            const IconComponent = committee.icon;
+            const isDisabled = (!isSelected && selectedCount >= 2) || !committee.is_open;
+            const styling = committeeStyles[committee.name as keyof typeof committeeStyles] || {
+              icon: Briefcase,
+              color: "from-gray-500 to-gray-600",
+              bgColor: "bg-gray-50",
+              borderColor: "border-gray-200",
+              selectedBorder: "border-gray-500",
+              selectedBg: "bg-gray-100",
+            };
+            const IconComponent = styling.icon;
 
             return (
               <div
-                key={committee.name}
+                key={committee.id}
                 className={`relative group transition-all duration-300 ${
                   isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 cursor-pointer'
                 }`}
@@ -541,29 +517,43 @@ const SkillsInfo = ({ formData, setFormData, errors }: FormSectionProps) => {
               >
                 <div className={`relative p-6 rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
                   isSelected
-                    ? `${committee.selectedBorder} ${committee.selectedBg} shadow-xl transform scale-105`
+                    ? `${styling.selectedBorder} ${styling.selectedBg} shadow-xl transform scale-105`
                     : isDisabled
-                    ? `${committee.borderColor} bg-gray-50`
-                    : `${committee.borderColor} ${committee.bgColor} hover:${committee.selectedBorder} hover:shadow-lg`
+                    ? `${styling.borderColor} bg-gray-50`
+                    : `${styling.borderColor} ${styling.bgColor} hover:${styling.selectedBorder} hover:shadow-lg`
                 }`}>
 
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-5">
-                    <div className={`absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br ${committee.color} rounded-full`}></div>
-                    <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${committee.color} rounded-full`}></div>
+                    <div className={`absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br ${styling.color} rounded-full`}></div>
+                    <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${styling.color} rounded-full`}></div>
                   </div>
+
+                  {/* Closed Committee Overlay */}
+                  {/* {!committee.is_open && (
+                    <div className="absolute inset-0 bg-red-50 bg-opacity-90 flex items-center justify-center rounded-2xl z-20">
+                      <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-2 bg-red-100 rounded-full flex items-center justify-center">
+                          <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
+                          </svg>
+                        </div>
+                        <span className="text-sm font-medium text-red-700">Closed</span>
+                      </div>
+                    </div>
+                  )} */}
 
                   {/* Selection Indicator */}
                   {isSelected && (
-                    <div className="absolute top-3 right-3 animate-bounce-in">
-                      <div className={`w-8 h-8 bg-gradient-to-br ${committee.color} rounded-full flex items-center justify-center shadow-lg`}>
+                    <div className="absolute top-3 right-3 animate-bounce-in z-10">
+                      <div className={`w-8 h-8 bg-gradient-to-br ${styling.color} rounded-full flex items-center justify-center shadow-lg`}>
                         <CheckCircle className="w-5 h-5 text-white" />
                       </div>
                     </div>
                   )}
 
                   {/* Icon */}
-                  <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${committee.color} rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${styling.color} rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent className="w-8 h-8 text-white" />
                   </div>
 
@@ -574,21 +564,38 @@ const SkillsInfo = ({ formData, setFormData, errors }: FormSectionProps) => {
                     }`}>
                       {committee.name}
                     </h3>
-                    <p className={`text-sm leading-relaxed transition-colors duration-300 ${
+                    <p className={`text-sm leading-relaxed transition-colors duration-300 mb-4 ${
                       isSelected ? 'text-gray-700' : isDisabled ? 'text-gray-400' : 'text-gray-600'
                     }`}>
                       {committee.description}
                     </p>
+
+                    {/* Status Indicators */}
+                    <div className="flex items-center justify-between">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        committee.is_open
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {committee.is_open ? 'Open' : 'Closed'}
+                      </span>
+
+                      {isSelected && (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          Selected
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {/* Hover Effect */}
-                  {!isDisabled && !isSelected && (
+                  {!isDisabled && !isSelected && committee.is_open && (
                     <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
                   )}
 
-                  {/* Disabled Overlay */}
-                  {isDisabled && (
-                    <div className="absolute inset-0 bg-gray-100/80 rounded-2xl flex items-center justify-center">
+                  {/* Selection Limit Reached Overlay */}
+                  {!isSelected && selectedCount >= 2 && committee.is_open && (
+                    <div className="absolute inset-0 bg-gray-100/80 rounded-2xl flex items-center justify-center z-10">
                       <span className="text-xs font-medium text-gray-500 bg-white px-3 py-1 rounded-full shadow">
                         Limit Reached
                       </span>
@@ -858,7 +865,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
         newErrors[field] = `${fieldLabels[field]} is required.`;
       });
       setClientErrors(newErrors);
-      
+
       // Navigate to the first step with missing fields
       if (missing.length > 0) {
         const errorStep = fieldToStepMap[missing[0]];
@@ -1187,12 +1194,12 @@ export default function Create({ committees, academicYears, formInstructions }: 
                                 const stepNumber = fieldToStepMap[field];
                                 const stepNames = {
                                   2: 'Personal Information',
-                                  3: 'Educational Information', 
+                                  3: 'Educational Information',
                                   4: 'About SPE',
                                   5: 'Committee Selection'
                                 };
                                 const stepName = stepNumber ? stepNames[stepNumber as keyof typeof stepNames] : '';
-                                
+
                                 return (
                                   <div key={field} className="flex items-center justify-between p-2 bg-white/60 backdrop-blur-sm rounded-lg">
                                     <div>
@@ -1372,6 +1379,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
                         formData={formData}
                         setFormData={setFormData}
                         errors={combinedErrors}
+                        committees={committees}
                       />
                     </div>
                   )}
