@@ -12,9 +12,14 @@ type StepIndicatorProps = {
   errorSteps?: number[];
 };
 
+// Utility function to scroll to top smoothly
+const scrollToTop = (behavior: ScrollBehavior = 'smooth') => {
+  window.scrollTo({ top: 0, behavior });
+};
+
 // Form step components (inline for enhanced UI)
 const StepIndicator = ({ currentStep, totalSteps, onStepClick, completedSteps = [], errorSteps = [] }: StepIndicatorProps) => (
-  <div className="flex items-center justify-center space-x-4 mb-8">
+  <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-6 sm:mb-8 overflow-x-auto pb-2 px-2">
     {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => {
       const isActive = step === currentStep;
       const isCompleted = completedSteps.includes(step) || step < currentStep;
@@ -22,12 +27,12 @@ const StepIndicator = ({ currentStep, totalSteps, onStepClick, completedSteps = 
       const hasError = errorSteps.includes(step);
 
       return (
-        <div key={step} className="flex items-center">
+        <div key={step} className="flex items-center flex-shrink-0">
           <button
             type="button"
             onClick={() => isClickable && onStepClick && onStepClick(step)}
             disabled={!isClickable && !isActive}
-            className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-300 ${
               hasError
                 ? 'bg-gradient-to-br from-red-600 to-red-700 text-white shadow-lg animate-pulse'
                 : isActive
@@ -43,11 +48,11 @@ const StepIndicator = ({ currentStep, totalSteps, onStepClick, completedSteps = 
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-            ) : isCompleted && !isActive ? <CheckCircle className="w-5 h-5" /> : step}
+            ) : isCompleted && !isActive ? <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" /> : step}
           </button>
           {step < totalSteps && (
             <div
-              className={`w-8 h-0.5 mx-2 transition-colors duration-300 ${
+              className={`w-4 sm:w-8 h-0.5 mx-1 sm:mx-2 transition-colors duration-300 flex-shrink-0 ${
                 hasError ? 'bg-red-500' : isCompleted ? 'bg-green-500' : 'bg-gray-300'
               }`}
             />
@@ -472,28 +477,28 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
     <div className="space-y-8">
       {/* Committee Selection */}
       <div className="group">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Choose Your Committee</h2>
-          <p className="text-gray-600 mb-4">Select 1 or 2 committees that align with your interests and skills</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Choose Your Committee</h2>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 px-2">Select 1 or 2 committees that align with your interests and skills</p>
 
           {/* Selection Status */}
-          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-full shadow-sm">
-            <div className={`w-3 h-3 rounded-full mr-3 animate-pulse ${
+          <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-full shadow-sm max-w-full">
+            <div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-2 sm:mr-3 animate-pulse flex-shrink-0 ${
               selectedCount === 0 ? 'bg-gray-400' :
               selectedCount === 1 ? 'bg-blue-500' : 'bg-green-500'
             }`}></div>
-            <span className={`text-sm font-medium ${
+            <span className={`text-xs sm:text-sm font-medium ${
               selectedCount >= 1 ? 'text-green-700' : 'text-blue-700'
             }`}>
               {selectedCount === 0 && "Please select at least 1 committee"}
-              {selectedCount === 1 && "1 committee selected (you can select 1 more)"}
-              {selectedCount === 2 && "2 committees selected (perfect!)"}
+              {selectedCount === 1 && <><span className="hidden sm:inline">1 committee selected (you can select 1 more)</span><span className="sm:hidden">1 selected (can select 1 more)</span></>}
+              {selectedCount === 2 && <><span className="hidden sm:inline">2 committees selected (perfect!)</span><span className="sm:hidden">2 selected (perfect!)</span></>}
             </span>
           </div>
         </div>
 
         {/* Creative Committee Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {committees.map((committee) => {
             const isSelected = formData.committee_choices?.includes(committee.name) || false;
             const isDisabled = (!isSelected && selectedCount >= 2) || !committee.is_open;
@@ -511,11 +516,11 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
               <div
                 key={committee.id}
                 className={`relative group transition-all duration-300 ${
-                  isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 cursor-pointer'
+                  isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95 cursor-pointer'
                 }`}
                 onClick={() => !isDisabled && handleCommitteeChange(committee.name)}
               >
-                <div className={`relative p-6 rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
+                <div className={`relative p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
                   isSelected
                     ? `${styling.selectedBorder} ${styling.selectedBg} shadow-xl transform scale-105`
                     : isDisabled
@@ -792,9 +797,11 @@ export default function Create({ committees, academicYears, formInstructions }: 
     }
   };
 
-  // Animation handler for step transitions
+  // Animation handler for step transitions with scroll to top
   const handleStepTransition = (callback: () => void) => {
     setIsTransitioning(true);
+    // Scroll to top immediately when transitioning
+    scrollToTop('smooth');
     setTimeout(() => {
       callback();
       setTimeout(() => setIsTransitioning(false), 150);
@@ -1042,40 +1049,41 @@ export default function Create({ committees, academicYears, formInstructions }: 
         {/* Navigation Header */}
         <nav className="bg-white/90 backdrop-blur-md shadow-lg border-b border-white/20 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
-                <Link href="/" className="flex items-center space-x-3 group">
-                  <ArrowLeft className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
-                  <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">SPE Suez</span>
+            <div className="flex justify-between items-center h-14 sm:h-16">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                  <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">SPE Suez</span>
                 </Link>
               </div>
-              <div className="hidden md:flex items-center space-x-6">
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Clock className="w-4 h-4" />
-                  <span>Step {currentStep} of {totalSteps}</span>
+              <div className="flex items-center space-x-3 sm:space-x-6">
+                <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">Step {currentStep} of {totalSteps}</span>
+                  <span className="sm:hidden">{currentStep}/{totalSteps}</span>
                 </div>
-                <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="hidden sm:block w-24 md:w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out rounded-full"
                     style={{ width: `${progressPercentage}%` }}
                   ></div>
                 </div>
-                <span className="text-sm font-medium text-blue-600">{Math.round(progressPercentage)}%</span>
+                <span className="text-xs sm:text-sm font-medium text-blue-600">{Math.round(progressPercentage)}%</span>
               </div>
             </div>
           </div>
         </nav>
 
         {/* Progress Banner */}
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 py-4">
+        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 py-3 sm:py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between text-white">
-              <div className="flex items-center space-x-3">
-                <Users className="w-5 h-5" />
-                <h1 className="text-lg font-bold">SPE Suez Membership Application</h1>
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <h1 className="text-sm sm:text-base md:text-lg font-bold truncate">SPE Suez Membership Application</h1>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="hidden md:flex items-center space-x-2">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="hidden lg:flex items-center space-x-2">
                   <Sparkles className="w-4 h-4 animate-pulse" />
                   <span className="text-sm">Join our amazing community!</span>
                 </div>
@@ -1083,7 +1091,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
                   {[...Array(totalSteps)].map((_, index) => (
                     <div
                       key={index}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
                         index + 1 <= currentStep
                           ? 'bg-white scale-125'
                           : completedSteps.includes(index + 1)
@@ -1099,9 +1107,9 @@ export default function Create({ committees, academicYears, formInstructions }: 
         </div>
 
         {/* Main Form Container */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
           {/* Form Content */}
-          <div className={`bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mt-8 border border-white/20 transition-all duration-500 ${isTransitioning ? 'opacity-50 transform translate-y-4' : 'opacity-100 transform translate-y-0'}`}>
+          <div className={`bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 mt-4 sm:mt-6 md:mt-8 border border-white/20 transition-all duration-500 ${isTransitioning ? 'opacity-50 transform translate-y-4' : 'opacity-100 transform translate-y-0'}`}>
             <Form
               action="/apply"
               method="post"
@@ -1226,21 +1234,21 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                     {/* Step 1: Introduction */}
                   {currentStep === 1 && (
-                    <div className="space-y-8 animate-fadeIn">
+                    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
                       <div className="text-center">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-6 shadow-lg">
-                          <Sparkles className="w-8 h-8 text-white animate-pulse" />
+                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-4 sm:mb-6 shadow-lg">
+                          <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-pulse" />
                         </div>
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
                           SPE Suez Recruitment
                         </h1>
-                        <p className="text-xl text-gray-600 mb-4">قسم 1 من 5</p>
-                        <p className="text-lg text-gray-600 mb-8">
+                        <p className="text-lg sm:text-xl text-gray-600 mb-3 sm:mb-4">قسم 1 من 5</p>
+                        <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 px-4">
                           Please, read the following very carefully.
                         </p>
                       </div>
 
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg">
+                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                           <CheckCircle className="w-6 h-6 text-blue-600 mr-3" />
                           Application filling tips:
@@ -1297,16 +1305,16 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                   {/* Step 2: Personal Information */}
                   {currentStep === 2 && (
-                    <div className="space-y-8 animate-fadeIn">
-                      <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl mb-6 shadow-lg">
-                          <Users className="w-8 h-8 text-white" />
+                    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
+                      <div className="text-center mb-6 sm:mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl mb-4 sm:mb-6 shadow-lg">
+                          <Users className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+                        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
                           Personal Information
                         </h1>
-                        <p className="text-lg text-gray-600">قسم 2 من 5</p>
-                        <p className="text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
+                        <p className="text-base sm:text-lg text-gray-600">قسم 2 من 5</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
                       </div>
 
                       <PersonalInfo
@@ -1319,16 +1327,16 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                   {/* Step 3: Educational Information */}
                   {currentStep === 3 && (
-                    <div className="space-y-8 animate-fadeIn">
-                      <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl mb-6 shadow-lg">
-                          <BookOpen className="w-8 h-8 text-white" />
+                    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
+                      <div className="text-center mb-6 sm:mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl mb-4 sm:mb-6 shadow-lg">
+                          <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+                        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
                           Educational Information
                         </h1>
-                        <p className="text-lg text-gray-600">قسم 3 من 5</p>
-                        <p className="text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
+                        <p className="text-base sm:text-lg text-gray-600">قسم 3 من 5</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
                       </div>
 
                       <EducationInfo
@@ -1341,16 +1349,16 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                   {/* Step 4: About SPE Suez */}
                   {currentStep === 4 && (
-                    <div className="space-y-8 animate-fadeIn">
-                      <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl mb-6 shadow-lg">
-                          <Briefcase className="w-8 h-8 text-white" />
+                    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
+                      <div className="text-center mb-6 sm:mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl mb-4 sm:mb-6 shadow-lg">
+                          <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+                        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
                           About SPE Suez
                         </h1>
-                        <p className="text-lg text-gray-600">قسم 4 من 5</p>
-                        <p className="text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
+                        <p className="text-base sm:text-lg text-gray-600">قسم 4 من 5</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
                       </div>
 
                       <ExperienceInfo
@@ -1363,16 +1371,16 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                   {/* Step 5: About Committee */}
                   {currentStep === 5 && (
-                    <div className="space-y-8 animate-fadeIn">
-                      <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-2xl mb-6 shadow-lg">
-                          <Award className="w-8 h-8 text-white" />
+                    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
+                      <div className="text-center mb-6 sm:mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-2xl mb-4 sm:mb-6 shadow-lg">
+                          <Award className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
+                        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
                           About Committee
                         </h1>
-                        <p className="text-lg text-gray-600">قسم 5 من 5</p>
-                        <p className="text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
+                        <p className="text-base sm:text-lg text-gray-600">قسم 5 من 5</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-2">الوصف (اختياري)</p>
                       </div>
 
                       <SkillsInfo
@@ -1385,22 +1393,22 @@ export default function Create({ committees, academicYears, formInstructions }: 
                   )}
 
                   {/* Enhanced Navigation */}
-                  <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                  <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200">
                     <button
                       type="button"
                       onClick={previousStep}
                       disabled={currentStep === 1 || isTransitioning}
-                      className={`group flex items-center px-6 py-3 rounded-xl transition-all duration-300 ${
+                      className={`group flex items-center justify-center px-4 sm:px-6 py-3 rounded-xl transition-all duration-300 order-2 sm:order-1 ${
                         currentStep === 1 || isTransitioning
                           ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md hover:scale-105 shadow-sm border border-gray-200'
+                          : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md hover:scale-105 shadow-sm border border-gray-200 active:scale-95'
                       }`}
                     >
                       <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" />
-                      Previous Step
+                      <span className="text-sm sm:text-base">Previous Step</span>
                     </button>
 
-                    <div className="flex items-center space-x-3">
+                    <div className="hidden sm:flex items-center space-x-3 order-1 sm:order-2">
                       <div className="text-sm font-medium text-gray-600">
                         Step {currentStep} of {totalSteps}
                       </div>
@@ -1417,27 +1425,27 @@ export default function Create({ committees, academicYears, formInstructions }: 
                         type="button"
                         onClick={nextStep}
                         disabled={isTransitioning}
-                        className={`group flex items-center px-6 py-3 rounded-xl transition-all duration-300 ${
+                        className={`group flex items-center justify-center px-4 sm:px-6 py-3 rounded-xl transition-all duration-300 order-1 sm:order-3 ${
                           isTransitioning
                             ? 'bg-blue-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:scale-105'
+                            : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:scale-105 active:scale-95'
                         } text-white shadow-md`}
                       >
-                        Next Step
+                        <span className="text-sm sm:text-base">Next Step</span>
                         <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                       </button>
                     ) : (
                       <button
                         type="submit"
                         disabled={processing || isTransitioning || !isCommitteeSelectionValid}
-                        className={`group flex items-center px-8 py-3 rounded-xl transition-all duration-300 ${
+                        className={`group flex items-center justify-center px-6 sm:px-8 py-3 rounded-xl transition-all duration-300 order-1 sm:order-3 ${
                           processing || isTransitioning || !isCommitteeSelectionValid
                             ? 'bg-green-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 hover:shadow-lg hover:scale-105'
+                            : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 hover:shadow-lg hover:scale-105 active:scale-95'
                         } text-white shadow-md font-semibold`}
                       >
-                        <CheckCircle className="w-5 h-5 mr-2" />
-                        {processing ? 'Submitting...' : 'Submit Application'}
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        <span className="text-sm sm:text-base">{processing ? 'Submitting...' : 'Submit Application'}</span>
                       </button>
                     )}
                   </div>
