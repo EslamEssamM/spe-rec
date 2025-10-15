@@ -18,17 +18,32 @@ class ApplicationController extends Controller
 {
     public function create(): Response
     {
+        // Check if recruitment is currently closed
+        $recruitmentOpensAt = now()->parse(config('recruitment.opens_at', '2025-12-05 00:00:00'));
+        $isRecruitmentOpen = config('recruitment.is_open', false) || now()->isAfter($recruitmentOpensAt);
+
+        if (!$isRecruitmentOpen) {
+            return Inertia::render('Application/Closed', [
+                'type' => 'recruitment_closed',
+                'title' => 'Recruitment Currently Closed',
+                'message' => config('recruitment.closed_message', 'SPE Suez Student Chapter recruitment is currently closed.'),
+                'reopenDate' => $recruitmentOpensAt->format('F j, Y'),
+                'reopenDateTime' => $recruitmentOpensAt->toISOString(),
+                'contactEmail' => config('recruitment.contact_email', 'spesusc.hrm2026@gmail.com'),
+            ]);
+        }
+
         $committees = Committee::orderBy('name')->get();
 
         // Check if any committees are available
         if ($committees->where('is_open', true)->isEmpty()) {
             return Inertia::render('Application/Closed', [
-                'message' => 'Applications are currently closed. All committees have reached their capacity.',
-                'contactEmail' => 'spesusc.hrm2026@gmail.com',
+                'type' => 'committees_closed',
+                'title' => 'Applications Currently Closed',
+                'message' => config('recruitment.committees_closed_message', 'Applications are currently closed. All committees have reached their capacity.'),
+                'contactEmail' => config('recruitment.contact_email', 'spesusc.hrm2026@gmail.com'),
             ]);
-        }
-
-        return Inertia::render('Application/Create', [
+        }        return Inertia::render('Application/Create', [
             'committees' => $committees,
             'academicYears' => [
                 'First' => 'First Year',
