@@ -166,15 +166,7 @@ export default function Closed({
               <span className="text-sm sm:text-base">Return to Homepage</span>
             </Link>
 
-            <Link
-              href="/about"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="text-sm sm:text-base">Learn About SPE</span>
-            </Link>
+            
           </div>
 
           {/* Footer Note */}
