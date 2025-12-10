@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AdminApplicationController;
 use App\Http\Controllers\Admin\AdminCommitteeController;
 use App\Http\Controllers\Admin\AdminController;
@@ -12,7 +11,6 @@ use Inertia\Inertia;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/committees', [CommitteeController::class, 'public'])->name('committees.public');
 
 // Application routes

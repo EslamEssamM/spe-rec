@@ -22,7 +22,7 @@ export default function Index({ committees, pageTitle, description }: Committees
   return (
     <>
       <Head title="Committees - SPE Suez" />
-      
+
       <div className="min-h-screen bg-white">
         {/* Navigation Header */}
         <nav className="bg-white shadow-sm border-b">
@@ -44,8 +44,8 @@ export default function Index({ committees, pageTitle, description }: Committees
                   <Link href="/committees" className="text-blue-900 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium">
                     Committees
                   </Link>
-                  <Link 
-                    href="/apply" 
+                  <Link
+                    href="/apply"
                     className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Apply Now
@@ -75,7 +75,7 @@ export default function Index({ committees, pageTitle, description }: Committees
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-8">
               {committees.map((committee) => (
-                <div 
+                <div
                   key={committee.id}
                   className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow p-8"
                 >
@@ -98,11 +98,11 @@ export default function Index({ committees, pageTitle, description }: Committees
                       )}
                     </div>
                   </div>
-                  
+
                   <p className="text-gray-700 mb-6 leading-relaxed">
                     {committee.description}
                   </p>
-                  
+
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Key Responsibilities</h3>
                     <div className="bg-gray-50 p-4 rounded-lg">
@@ -111,14 +111,14 @@ export default function Index({ committees, pageTitle, description }: Committees
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="pt-4 border-t border-gray-200">
                     {committee.is_open ? (
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-green-600 font-medium">
                           ✓ Currently accepting applications
                         </span>
-                        <Link 
+                        <Link
                           href="/apply"
                           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
                         >
@@ -180,8 +180,8 @@ export default function Index({ committees, pageTitle, description }: Committees
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               Choose the committee that aligns with your passion and skills. Join us in advancing petroleum engineering at Suez University.
             </p>
-            <Link 
-              href="/apply" 
+            <Link
+              href="/apply"
               className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
               Start Your Application Today
@@ -203,7 +203,7 @@ export default function Index({ committees, pageTitle, description }: Committees
                 <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                 <ul className="space-y-2">
                   <li><Link href="/" className="text-gray-400 hover:text-white">Home</Link></li>
-                  <li><Link href="/about" className="text-gray-400 hover:text-white">About Us</Link></li>
+                  <li><a href="https://spesuez.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">About Us</a></li>
                   <li><Link href="/apply" className="text-gray-400 hover:text-white">Apply Now</Link></li>
                 </ul>
               </div>

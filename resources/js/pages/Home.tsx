@@ -148,12 +148,14 @@ export default function Home({ speInfo, stats }: HomeProps) {
                                   Apply for Membership
                                   <ArrowRight className="ml-2 h-5 w-5" />
                               </Link>
-                              <Link
-                                  href="/about"
+                              <a
+                                  href="https://spesuez.com"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                   className="inline-flex items-center rounded-lg border-2 border-blue-600 bg-white px-8 py-4 font-semibold text-blue-600 transition-colors hover:bg-blue-50"
                               >
                                   Learn More About Us
-                              </Link>
+                              </a>
                           </div>
                       </div>
                   </div>
@@ -302,12 +304,14 @@ export default function Home({ speInfo, stats }: HomeProps) {
                               </h3>
                               <ul className="space-y-2">
                                   <li>
-                                      <Link
-                                          href="/about"
+                                      <a
+                                          href="https://spesuez.com"
+                                          target="_blank"
+                                          rel="noopener noreferrer"
                                           className="text-gray-400 hover:text-white"
                                       >
                                           About Us
-                                      </Link>
+                                      </a>
                                   </li>
                                   <li>
                                       <Link
