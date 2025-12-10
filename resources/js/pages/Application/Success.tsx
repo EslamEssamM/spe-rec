@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { CheckCircle, Mail, Phone, Calendar, Users } from 'lucide-react';
+import { CheckCircle, Mail, Calendar, Users, Facebook, Linkedin, Youtube, Instagram } from 'lucide-react';
 
 interface Application {
   id: number;
@@ -20,6 +20,7 @@ interface SuccessProps {
       facebook: string;
       linkedin: string;
       instagram: string;
+      youtube: string;
     };
   };
 }
@@ -142,33 +143,47 @@ export default function Success({ application, message, nextSteps, contactInfo }
 
               <div className="flex items-center justify-center mb-6">
                 <Mail className="h-6 w-6 mr-2" />
-                <span className="text-lg font-medium">{contactInfo.email}</span>
+                <a href={`mailto:${contactInfo.email}`} className="text-lg font-medium hover:underline">
+                  {contactInfo.email}
+                </a>
               </div>
 
-              <div className="flex justify-center space-x-6 mb-8">
+              <div className="flex justify-center space-x-4 mb-8">
                 <a
                   href={contactInfo.social.facebook}
-                  className="text-blue-100 hover:text-white transition-colors"
+                  className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-300"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Facebook"
                 >
-                  Facebook
+                  <Facebook className="h-5 w-5" />
                 </a>
                 <a
                   href={contactInfo.social.linkedin}
-                  className="text-blue-100 hover:text-white transition-colors"
+                  className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-300"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="LinkedIn"
                 >
-                  LinkedIn
+                  <Linkedin className="h-5 w-5" />
+                </a>
+                <a
+                  href={contactInfo.social.youtube}
+                  className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
+                  <Youtube className="h-5 w-5" />
                 </a>
                 <a
                   href={contactInfo.social.instagram}
-                  className="text-blue-100 hover:text-white transition-colors"
+                  className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-300"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Instagram"
                 >
-                  Instagram
+                  <Instagram className="h-5 w-5" />
                 </a>
               </div>
 

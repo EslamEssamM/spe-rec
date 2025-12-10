@@ -36,14 +36,15 @@ class ApplicationController extends Controller
         $committees = Committee::orderBy('name')->get();
 
         // Check if any committees are available
-        if ($committees->where('is_open', true)->isEmpty()) {
-            return Inertia::render('Application/Closed', [
-                'type' => 'committees_closed',
-                'title' => 'Applications Currently Closed',
-                'message' => config('recruitment.committees_closed_message', 'Applications are currently closed. All committees have reached their capacity.'),
-                'contactEmail' => config('recruitment.contact_email', 'spesusc.hrm2026@gmail.com'),
-            ]);
-        }        return Inertia::render('Application/Create', [
+        // if ($committees->where('is_open', true)->isEmpty()) {
+        //     return Inertia::render('Application/Closed', [
+        //         'type' => 'committees_closed',
+        //         'title' => 'Applications Currently Closed',
+        //         'message' => config('recruitment.committees_closed_message', 'Applications are currently closed. All committees have reached their capacity.'),
+        //         'contactEmail' => config('recruitment.contact_email', 'spesusc.hrm2026@gmail.com'),
+        //     ]);
+        // }
+        return Inertia::render('Application/Create', [
             'committees' => $committees,
             'academicYears' => [
                 'First' => 'First Year',
@@ -111,9 +112,10 @@ class ApplicationController extends Controller
             'contactInfo' => [
                 'email' => 'spesusc.hrm2026@gmail.com',
                 'social' => [
-                    'facebook' => '#',
-                    'linkedin' => '#',
-                    'instagram' => '#',
+                    'facebook' => 'https://www.facebook.com/SPESuez',
+                    'linkedin' => 'https://www.linkedin.com/company/spescusc',
+                    'youtube' => 'https://www.youtube.com/@SPESCUSC',
+                    'instagram' => 'https://www.instagram.com/spesusc/',
                 ],
             ],
         ]);
