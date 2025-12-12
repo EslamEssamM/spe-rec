@@ -16,6 +16,7 @@ class Application extends Model
         'email',
         'mobile',
         'facebook_link',
+        'personal_photo',
         'university',
         'faculty',
         'department',

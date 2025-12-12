@@ -19,7 +19,7 @@ class ApplicationFactory extends Factory
     {
         $universities = [
             'Suez University',
-            'Cairo University', 
+            'Cairo University',
             'Alexandria University',
             'Ain Shams University',
             'Mansoura University',
@@ -68,6 +68,7 @@ class ApplicationFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'mobile' => '+20 ' . $this->faker->numberBetween(100, 999) . ' ' . $this->faker->numberBetween(100, 999) . ' ' . $this->faker->numberBetween(1000, 9999),
             'facebook_link' => 'https://facebook.com/' . $this->faker->userName(),
+            'personal_photo' => 'applications/photos/default.jpg',
             'university' => $this->faker->randomElement($universities),
             'faculty' => $this->faker->randomElement($faculties),
             'department' => $this->faker->randomElement($departments),

@@ -68,6 +68,7 @@ interface FormData {
   email: string;
   mobile: string;
   facebook_link: string;
+  personal_photo: File | null;
   university: string;
   faculty: string;
   department: string;
@@ -115,6 +116,7 @@ const fieldLabels: Record<keyof FormData, string> = {
   email: 'Email',
   mobile: 'Mobile Number',
   facebook_link: 'Facebook Account Link',
+  personal_photo: 'Personal Photo',
   university: 'University',
   faculty: 'Faculty',
   department: 'Department',
@@ -128,12 +130,32 @@ const fieldLabels: Record<keyof FormData, string> = {
   open_space: 'Open Space',
 };
 
-const PersonalInfo = ({ formData, setFormData, errors }: FormSectionProps) => (
-  <div className="space-y-6">
-    <div className="group">
-      <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
-      <input
-        type="text"
+const PersonalInfo = ({ formData, setFormData, errors }: FormSectionProps) => {
+  const [photoPreview, setPhotoPreview] = React.useState<string | null>(null);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, personal_photo: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    setFormData(prev => ({ ...prev, personal_photo: null }));
+    setPhotoPreview(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+        <input
+          type="text"
         name="full_name"
         value={formData.full_name || ''}
         onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
@@ -189,8 +211,60 @@ const PersonalInfo = ({ formData, setFormData, errors }: FormSectionProps) => (
       />
       {errors.facebook_link && <p className="mt-1 text-sm text-red-600">{errors.facebook_link}</p>}
     </div>
+
+    <div className="group">
+      <label className="block text-sm font-semibold text-gray-700 mb-2">Personal Photo *</label>
+      <div className="space-y-4">
+        {photoPreview ? (
+          <div className="relative inline-block">
+            <img
+              src={photoPreview}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-xl border-2 border-gray-300 shadow-md"
+            />
+            <button
+              type="button"
+              onClick={removePhoto}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 transition-colors shadow-lg"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <label
+            className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
+              errors.personal_photo
+                ? 'border-red-300 bg-red-50 hover:bg-red-100'
+                : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-blue-400'
+            }`}
+          >
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p className="mb-2 text-sm text-gray-700 font-medium">
+                <span className="text-blue-600">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 2MB)</p>
+            </div>
+            <input
+              type="file"
+              name="personal_photo_input"
+              accept="image/png,image/jpeg,image/jpg"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+          </label>
+        )}
+      </div>
+      {errors.personal_photo && <p className="mt-1 text-sm text-red-600">{errors.personal_photo}</p>}
+      <p className="mt-1 text-xs text-gray-500">Upload a clear, recent photo of yourself</p>
+    </div>
   </div>
-);
+  );
+};
 
 const EducationInfo = ({ formData, setFormData, errors }: FormSectionProps) => (
   <div className="space-y-6">
@@ -734,6 +808,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
     email: '',
     mobile: '',
     facebook_link: '',
+    personal_photo: null,
     university: '',
     faculty: '',
     department: '',
@@ -760,6 +835,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
     email: 2,
     mobile: 2,
     facebook_link: 2,
+    personal_photo: 2,
     // Step 3: Educational Information
     university: 3,
     faculty: 3,
@@ -895,9 +971,15 @@ export default function Create({ committees, academicYears, formInstructions }: 
           'email',
           'mobile',
           'facebook_link',
+          'personal_photo',
         ];
         const personalMissing = personalRequiredFields.filter(
-          (field) => !currentFormData[field]?.toString().trim()
+          (field) => {
+            if (field === 'personal_photo') {
+              return !currentFormData[field];
+            }
+            return !currentFormData[field]?.toString().trim();
+          }
         );
 
         if (personalMissing.length > 0) {
@@ -1158,6 +1240,20 @@ export default function Create({ committees, academicYears, formInstructions }: 
                     <input type="hidden" name="email" value={formData.email || ''} />
                     <input type="hidden" name="mobile" value={formData.mobile || ''} />
                     <input type="hidden" name="facebook_link" value={formData.facebook_link || ''} />
+                    {formData.personal_photo && (
+                      <input
+                        type="file"
+                        name="personal_photo"
+                        className="hidden"
+                        ref={(input) => {
+                          if (input && formData.personal_photo) {
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(formData.personal_photo);
+                            input.files = dataTransfer.files;
+                          }
+                        }}
+                      />
+                    )}
                     <input type="hidden" name="university" value={formData.university || ''} />
                     <input type="hidden" name="faculty" value={formData.faculty || ''} />
                     <input type="hidden" name="department" value={formData.department || ''} />

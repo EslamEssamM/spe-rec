@@ -1,8 +1,13 @@
 <?php
 
 use App\Models\Committee;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
+    // Fake storage for file uploads
+    Storage::fake('public');
+
     // Create some committees for testing
     Committee::factory()->create([
         'name' => 'Human resources Management (HRM)',
@@ -29,6 +34,7 @@ it('can submit a valid application with one committee', function () {
         'email' => 'john.doe@gmail.com',
         'mobile' => '+20 123 456 7890',
         'facebook_link' => 'https://facebook.com/john.doe',
+        'personal_photo' => UploadedFile::fake()->image('photo.jpg', 600, 600)->size(1000),
         'university' => 'Suez University',
         'faculty' => 'Faculty of Engineering',
         'department' => 'Petroleum Engineering',
@@ -62,6 +68,7 @@ it('can submit a valid application with two committees', function () {
         'email' => 'jane.smith@gmail.com',
         'mobile' => '+20 987 654 3210',
         'facebook_link' => 'https://facebook.com/jane.smith',
+        'personal_photo' => UploadedFile::fake()->image('jane-photo.jpg'),
         'university' => 'Suez University',
         'faculty' => 'Faculty of Engineering',
         'department' => 'Petroleum Engineering',
@@ -85,6 +92,9 @@ it('can submit a valid application with two committees', function () {
         'committee_choices' => json_encode(['Human resources Management (HRM)', 'Social Media']),
         'status' => 'pending',
     ]);
+
+    // Assert photo was uploaded
+    Storage::disk('public')->assertExists('applications/photos/' . basename($applicationData['personal_photo']->hashName()));
 });
 
 it('requires all mandatory fields', function () {

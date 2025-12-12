@@ -73,6 +73,12 @@ class ApplicationController extends Controller
     {
         $validated = $request->validated();
 
+        // Handle photo upload
+        if ($request->hasFile('personal_photo')) {
+            $photoPath = $request->file('personal_photo')->store('applications/photos', 'public');
+            $validated['personal_photo'] = $photoPath;
+        }
+
         // Create the application
         $application = Application::create(array_merge(
             $validated,
