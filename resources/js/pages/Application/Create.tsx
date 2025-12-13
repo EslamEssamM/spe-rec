@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Form } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Sparkles, Clock, Users, CheckCircle, ChevronDown, BookOpen, Briefcase, Award, FileText, Upload, UserCheck, TrendingUp, Share2, Camera, Target, Edit3, Palette, Globe, Calendar, Gamepad2, Truck, Zap, GraduationCap, BarChart3, Building2, Smartphone, Code } from 'lucide-react';
 
