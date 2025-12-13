@@ -535,11 +535,11 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
         committee_choices: currentChoices.filter(choice => choice !== committee)
       }));
     } else {
-      // Add if not selected and under limit of 2
-      if (currentChoices.length < 2) {
+      // Add if not selected and under limit of 1
+      if (currentChoices.length < 1) {
         setFormData(prev => ({
           ...prev,
-          committee_choices: [...currentChoices, committee]
+          committee_choices: [committee]
         }));
       }
     }
@@ -553,7 +553,7 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
       <div className="group">
         <div className="text-center mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Choose Your Committee</h2>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 px-2">Select 1 or 2 committees that align with your interests and skills</p>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 px-2">Select the committee that aligns with your interests and skills</p>
 
           {/* Selection Status */}
           <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-full shadow-sm max-w-full">
@@ -564,9 +564,8 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
             <span className={`text-xs sm:text-sm font-medium ${
               selectedCount >= 1 ? 'text-green-700' : 'text-blue-700'
             }`}>
-              {selectedCount === 0 && "Please select at least 1 committee"}
-              {selectedCount === 1 && <><span className="hidden sm:inline">1 committee selected (you can select 1 more)</span><span className="sm:hidden">1 selected (can select 1 more)</span></>}
-              {selectedCount === 2 && <><span className="hidden sm:inline">2 committees selected (perfect!)</span><span className="sm:hidden">2 selected (perfect!)</span></>}
+              {selectedCount === 0 && "Please select 1 committee"}
+              {selectedCount === 1 && <><span className="hidden sm:inline">1 committee selected (perfect!)</span><span className="sm:hidden">1 selected (perfect!)</span></>}
             </span>
           </div>
         </div>
@@ -575,7 +574,7 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {committees.map((committee) => {
             const isSelected = formData.committee_choices?.includes(committee.name) || false;
-            const isDisabled = (!isSelected && selectedCount >= 2) || !committee.is_open;
+            const isDisabled = (!isSelected && selectedCount >= 1) || !committee.is_open;
             const styling = committeeStyles[committee.name as keyof typeof committeeStyles] || {
               icon: Briefcase,
               color: "from-gray-500 to-gray-600",
@@ -673,10 +672,10 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
                   )}
 
                   {/* Selection Limit Reached Overlay */}
-                  {!isSelected && selectedCount >= 2 && committee.is_open && (
+                  {!isSelected && selectedCount >= 1 && committee.is_open && (
                     <div className="absolute inset-0 bg-gray-100/80 rounded-2xl flex items-center justify-center z-10">
                       <span className="text-xs font-medium text-gray-500 bg-white px-3 py-1 rounded-full shadow">
-                        Limit Reached
+                        Already Selected
                       </span>
                     </div>
                   )}
@@ -687,12 +686,12 @@ const SkillsInfo = ({ formData, setFormData, errors, committees = [] }: FormSect
         </div>
 
         {/* Selection Info */}
-        {selectedCount < 2 && (
+        {selectedCount === 0 && (
           <div className="mt-8 text-center">
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl">
               <Sparkles className="w-5 h-5 text-amber-500 mr-2 animate-pulse" />
               <span className="text-amber-800 font-medium">
-                {selectedCount === 0 ? "Select your first committee to get started!" : "You can select one more committee if you'd like!"}
+                Select your committee to get started!
               </span>
             </div>
           </div>
@@ -825,7 +824,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
   const totalSteps = 5;
   const isCommitteeSelectionValid = (() => {
     const count = formData.committee_choices?.length ?? 0;
-    return count >= 1 && count <= 2;
+    return count === 1;
   })();
 
   // Map fields to their corresponding steps
@@ -889,12 +888,12 @@ export default function Create({ committees, academicYears, formInstructions }: 
     const newErrors: Record<string, string> = {};
 
     if (choices.length === 0) {
-      newErrors.committee_choices = 'Please select at least one committee (maximum two).';
+      newErrors.committee_choices = 'Please select one committee.';
     }
 
-    if (choices.length > 2) {
-      newErrors.committee_choices = 'Please select no more than two committees.';
-      newErrors.form = 'Please adjust your committee selections before submitting your application.';
+    if (choices.length > 1) {
+      newErrors.committee_choices = 'Please select only one committee.';
+      newErrors.form = 'Please select only one committee before submitting your application.';
     }
 
     if (!formData.why_committee?.trim()) {
@@ -1548,7 +1547,7 @@ export default function Create({ committees, academicYears, formInstructions }: 
 
                   {currentStep === totalSteps && !isCommitteeSelectionValid && (
                     <p className="mt-4 text-sm text-red-600">
-                      Select at least one committee (maximum two) to enable submission.
+                      Select one committee to enable submission.
                     </p>
                   )}
 
